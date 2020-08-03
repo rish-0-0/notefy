@@ -1,10 +1,11 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 
-export default function ({onPress, labelStyle, label, containerStyle}) {
+export default function ({onPress, labelStyle, label, containerStyle, disabled}) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       style={{...styles.container, ...containerStyle}}>
       <Text style={{...styles.text, ...labelStyle}}>{label}</Text>
     </TouchableOpacity>
