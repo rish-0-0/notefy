@@ -1,9 +1,29 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FAB from '../../Components/FAB';
+import getFiles from '../../helpers/readDir';
+import {SwipeListView} from 'react-native-swipe-list-view';
+import Note from '../../Components/Note';
 
 function MyNotes({navigation}) {
+  const [notes, setNotes] = useState([]);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getFiles(
+        'Notefy',
+        (directory) => {
+          console.log('Logging the dir', directory);
+          setNotes([...directory]);
+        },
+        (e) => {
+          console.log(e);
+        },
+      );
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.view}>
       <FAB
@@ -15,6 +35,19 @@ function MyNotes({navigation}) {
         }}
         containerStyle={styles.containerStyle}
         iconStyle={styles.iconStyle}
+      />
+      <SwipeListView
+        data={notes}
+        renderItem={({item}) => (
+          <Note
+            header={item.header}
+            body={item.body}
+            category={item.category}
+          />
+        )}
+        leftOpenValue={75}
+        rightOpenValue={-75}
+        keyExtractor={(item, index) => `swipe-list-item-${index}`}
       />
     </View>
   );
