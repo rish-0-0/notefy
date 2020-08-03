@@ -16,8 +16,20 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import Note from '../../Components/Note';
 import deleteFile from '../../helpers/deleteFile';
 
+import DatePicker from '@react-native-community/datetimepicker';
+
+function onOpenDatePicker(onOpen, bool) {
+  onOpen(bool);
+}
+
+function onCloseDatePicker(onClose, item) {
+  onClose(item);
+}
+
 function MyNotes({navigation}) {
   const [notes, setNotes] = useState([]);
+  const [showPicker, setShowPicker] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getFiles(
@@ -48,12 +60,15 @@ function MyNotes({navigation}) {
       />
       <SwipeListView
         data={notes}
+        useNativeDriver={true}
         renderItem={({item}) => (
           <Note
             header={item.header}
             body={item.body}
             category={item.category}
-            onRemindPress={() => console.log('Remind')}
+            onRemindPress={(item) => {
+              onOpenDatePicker(setShowPicker, true);
+            }}
           />
         )}
         // leftOpenValue={75}
@@ -104,6 +119,51 @@ function MyNotes({navigation}) {
         // rightActionValue={-Dimensions.get('window').width / 2}
         keyExtractor={(item, index) => `swipe-list-item-${index}`}
       />
+      {showPicker && (
+        <DatePicker
+          value={new Date()}
+          // mode={this.props.mode || 'dat'}
+          mode="date"
+          minimumDate={new Date()}
+          is24Hour
+          display="spinner"
+          style={{flex: 1}}
+          placeholderText={'Remind Me'}
+          onChange={(e, date) => {
+            if (e.type === 'dismissed') {
+              // nothing
+              console.log('time dismissed');
+            } else if (e.type === 'set') {
+              // do something
+              console.log('date set', date.toDateString());
+            }
+            setShowPicker(false);
+            setShowTimer(true);
+          }}
+        />
+      )}
+      {showTimer && !showPicker && (
+        <DatePicker
+          value={new Date()}
+          // mode={this.props.mode || 'dat'}
+          mode="time"
+          is24Hour
+          display="spinner"
+          style={{flex: 1}}
+          placeholderText={'Remind Me'}
+          onChange={(e, date) => {
+            if (e.type === 'dismissed') {
+              // nothing
+              console.log('time dismissed');
+            } else if (e.type === 'set') {
+              // do something
+              console.log('time set', date.toTimeString());
+            }
+            setShowTimer(false);
+            setShowPicker(false);
+          }}
+        />
+      )}
     </View>
   );
 }
