@@ -9,11 +9,11 @@ export default class extends React.Component {
         style={{
           ...styles.view,
           ...this.props.style,
-          backgroundColor: this.props.category,
+          backgroundColor: this.props.category || 'white',
         }}>
         <Text style={styles.header}>{this.props.header}</Text>
         <Text style={styles.body}>{this.props.body}</Text>
-        <SecondaryButton label="Remind me" onPress={() => {}} />
+        <SecondaryButton label="Remind me" onPress={this.props.onRemindPress} />
       </View>
     );
   }

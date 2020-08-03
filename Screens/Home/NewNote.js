@@ -11,8 +11,12 @@ import PrimaryButton from '../../Components/PrimaryButton';
 import writeToFile from '../../helpers/writeToFile';
 import Picker from '../../Components/Picker';
 
-function seperateUnderscore(string) {
-  return string.split(' ').join('_');
+function getRandomString() {
+  return Math.random().toString(36).substring(7);
+}
+
+function seperateUnderscore(string, random) {
+  return string.split(' ').join('_') + random;
 }
 
 function NewNote({navigation}) {
@@ -68,9 +72,16 @@ function NewNote({navigation}) {
         onPress={() => {
           if (!header || !body) return;
           setLoading(true);
+          const random = getRandomString();
+          const path = seperateUnderscore(header, random);
           writeToFile(
-            seperateUnderscore(header),
-            JSON.stringify({header: header, body: body, category: category}),
+            path,
+            JSON.stringify({
+              header: header,
+              body: body,
+              category: category,
+              path: path,
+            }),
             () => {
               setLoading(false);
               setError(null);
