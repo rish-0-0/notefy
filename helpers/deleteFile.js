@@ -11,7 +11,7 @@ function getOrifiginalFilePath(header) {
 
 function deleteFile(path, actual, successCallback, errorCallback) {
   if (actual) {
-    RNFS.unlink(path)
+    RNFS.unlink(RNFS.DocumentDirectoryPath + '/Notefy/' + path + '.notefy.json')
       .then(() => {
         successCallback();
       })
