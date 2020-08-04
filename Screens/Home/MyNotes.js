@@ -30,6 +30,7 @@ function MyNotes({navigation}) {
   const [notes, setNotes] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
+  const [reminderDate, setReminderDate] = useState(new Date());
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getFiles(
@@ -121,7 +122,7 @@ function MyNotes({navigation}) {
       />
       {showPicker && (
         <DatePicker
-          value={new Date()}
+          value={reminderDate}
           // mode={this.props.mode || 'dat'}
           mode="date"
           minimumDate={new Date()}
@@ -133,20 +134,24 @@ function MyNotes({navigation}) {
             if (e.type === 'dismissed') {
               // nothing
               console.log('time dismissed');
+              setShowPicker(false);
+              return;
             } else if (e.type === 'set') {
               // do something
+              setShowPicker(false);
+              setReminderDate(date);
+              setShowTimer(true);
               console.log('date set', date.toDateString());
             }
-            setShowPicker(false);
-            setShowTimer(true);
           }}
         />
       )}
       {showTimer && !showPicker && (
         <DatePicker
-          value={new Date()}
+          value={reminderDate}
           // mode={this.props.mode || 'dat'}
           mode="time"
+          minimumDate={reminderDate}
           is24Hour
           display="spinner"
           style={{flex: 1}}
@@ -155,12 +160,15 @@ function MyNotes({navigation}) {
             if (e.type === 'dismissed') {
               // nothing
               console.log('time dismissed');
+              setShowTimer(false);
+              setShowPicker(false);
             } else if (e.type === 'set') {
               // do something
+              setShowTimer(false);
+              setShowPicker(false);
+              setReminderDate(date);
               console.log('time set', date.toTimeString());
             }
-            setShowTimer(false);
-            setShowPicker(false);
           }}
         />
       )}
