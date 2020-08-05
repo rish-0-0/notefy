@@ -22,10 +22,6 @@ function onOpenDatePicker(onOpen, bool) {
   onOpen(bool);
 }
 
-function onCloseDatePicker(onClose, item) {
-  onClose(item);
-}
-
 function MyNotes({navigation}) {
   const [notes, setNotes] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
