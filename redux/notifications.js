@@ -22,6 +22,20 @@ const onNotfication = (notification) => {
   }
 };
 
+export const checkPermissions = (callback) => (dispatch) => {
+  dispatch({
+    type: notificationTypes.NOTIFICATION_CHECK_PERMISSION,
+  });
+  OurNotificationService.checkPermissions(callback);
+};
+
+export const requestPermissions = () => (dispatch) => {
+  dispatch({
+    type: notificationTypes.NOTIFICATION_REQUEST_PERMISSION,
+  });
+  OurNotificationService.requestPermissions();
+};
+
 export const scheduleNotification = (title, date, message) => (dispatch) => {
   OurNotificationService.scheduleNotification(title, message, date);
   dispatch({

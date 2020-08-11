@@ -47,6 +47,7 @@ export default class NotificationService {
     PushNotification.localNotification({
       title,
       message,
+      userInfo: {screen: 'Home'},
       channelId: 'notefy-channel-id',
     });
   }
@@ -57,6 +58,7 @@ export default class NotificationService {
       date,
       title,
       message,
+      userInfo: {screen: 'Home'},
       channelId: 'notefy-channel-id',
     });
   }
