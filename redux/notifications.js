@@ -24,7 +24,7 @@ const onNotfication = (notification) => {
 
 export const scheduleNotification = (title, date, message) => (dispatch) => {
   try {
-    initState.notif_service.scheduleNotification(title, message, date);
+    OurNotificationService.scheduleNotification(title, message, date);
     dispatch({
       type: notificationTypes.NOTIFICATION_SCHEDULE_SUCCESS,
     });
