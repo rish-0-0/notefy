@@ -3,7 +3,7 @@ import {notificationTypes} from './action_types';
 import store from '../config/store';
 import {ToastAndroid, Platform, Alert} from 'react-native';
 
-const onRegister = (token) => {
+const onRegister = ({token}) => {
   console.log('Registration Token', token);
   store.dispatch({
     type: notificationTypes.NOTIFICATION_ON_REGISTER,
@@ -23,19 +23,10 @@ const onNotfication = (notification) => {
 };
 
 export const scheduleNotification = (title, date, message) => (dispatch) => {
-  try {
-    OurNotificationService.scheduleNotification(title, message, date);
-    dispatch({
-      type: notificationTypes.NOTIFICATION_SCHEDULE_SUCCESS,
-    });
-  } catch (e) {
-    dispatch({
-      type: notificationTypes.NOTIFICATION_SCHEDULE_FAILURE,
-      payload: {
-        errorMessage: e.message,
-      },
-    });
-  }
+  OurNotificationService.scheduleNotification(title, message, date);
+  dispatch({
+    type: notificationTypes.NOTIFICATION_SCHEDULE_SUCCESS,
+  });
 };
 
 const OurNotificationService = new NotifService(

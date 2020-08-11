@@ -166,6 +166,7 @@ function MyNotes({navigation, scheduleNotification}) {
               setShowPicker(false);
             } else if (e.type === 'set') {
               // do something
+              console.log('date setting', date, typeof date);
               setShowTimer(false);
               setShowPicker(false);
               setReminderDate(date);
