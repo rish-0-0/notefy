@@ -20,15 +20,16 @@ import DatePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
 import {scheduleNotification} from '../../redux/notifications';
 
-function onOpenDatePicker(onOpen, bool) {
-  onOpen(bool);
-}
+// function onOpenDatePicker(onOpen, bool) {
+//   onOpen(bool);
+// }
 
-function MyNotes({navigation}) {
+function MyNotes({navigation, scheduleNotification}) {
   const [notes, setNotes] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
   const [reminderDate, setReminderDate] = useState(new Date());
+  const [selectedItem, setSelectedItem] = useState(null);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getFiles(
@@ -66,7 +67,8 @@ function MyNotes({navigation}) {
             body={item.body}
             category={item.category}
             onRemindPress={(item) => {
-              onOpenDatePicker(setShowPicker, true);
+              setSelectedItem(item);
+              setShowPicker(true);
             }}
           />
         )}
@@ -133,6 +135,7 @@ function MyNotes({navigation}) {
               // nothing
               console.log('time dismissed');
               setShowPicker(false);
+              setSelectedItem(null);
               return;
             } else if (e.type === 'set') {
               // do something
@@ -159,12 +162,19 @@ function MyNotes({navigation}) {
               // nothing
               console.log('time dismissed');
               setShowTimer(false);
+              setSelectedItem(null);
               setShowPicker(false);
             } else if (e.type === 'set') {
               // do something
               setShowTimer(false);
               setShowPicker(false);
               setReminderDate(date);
+              scheduleNotification(
+                selectedItem.header,
+                selectedItem.body,
+                date,
+              );
+              setSelectedItem(null);
               console.log('time set', date.toTimeString());
             }
           }}

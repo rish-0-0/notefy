@@ -30,8 +30,8 @@ export const scheduleNotification = (title, date, message) => (dispatch) => {
     });
   } catch (e) {
     dispatch({
+      type: notificationTypes.NOTIFICATION_SCHEDULE_FAILURE,
       payload: {
-        type: notificationTypes.NOTIFICATION_SCHEDULE_FAILURE,
         errorMessage: e.message,
       },
     });
