@@ -22,6 +22,18 @@ const onNotfication = (notification) => {
   }
 };
 
+export const getLocalNotificationsScheduled = (cb) => (dispatch) => {
+  OurNotificationService.getScheduledLocalNotifications((stuff) => {
+    dispatch({
+      type: notificationTypes.NOTIFICATION_GET_SCHEDULED,
+      payload: {
+        notifs: stuff,
+      },
+    });
+    cb(stuff);
+  });
+};
+
 export const checkPermissions = (callback) => (dispatch) => {
   dispatch({
     type: notificationTypes.NOTIFICATION_CHECK_PERMISSION,
@@ -47,12 +59,14 @@ const OurNotificationService = new NotifService(
   (token) => onRegister(token),
   onNotfication,
 );
+// OurNotificationService.createOrUpdateChannel();
 
 export default function (
   state = {
     notif_service: OurNotificationService,
     token: null,
     error: null,
+    scheduled: [],
   },
   action,
 ) {
@@ -66,6 +80,11 @@ export default function (
       return {
         ...state,
         error: action.payload.errorMessage,
+      };
+    case notificationTypes.NOTIFICATION_GET_SCHEDULED:
+      return {
+        ...state,
+        scheduled: action.payload.notifs,
       };
     default:
       return state;

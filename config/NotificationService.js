@@ -48,7 +48,6 @@ export default class NotificationService {
       title,
       message,
       userInfo: {screen: 'Home'},
-      channelId: 'notefy-channel-id',
     });
   }
 
@@ -59,7 +58,6 @@ export default class NotificationService {
       title,
       message,
       userInfo: {screen: 'Home'},
-      channelId: 'notefy-channel-id',
     });
   }
 
@@ -68,6 +66,7 @@ export default class NotificationService {
   }
 
   requestPermissions() {
+    console.log('Notification requesting stuff');
     return PushNotification.requestPermissions();
   }
 

@@ -18,13 +18,24 @@ import deleteFile from '../../helpers/deleteFile';
 
 import DatePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
-import {scheduleNotification} from '../../redux/notifications';
+import {
+  scheduleNotification,
+  checkPermissions,
+  requestPermissions,
+  getLocalNotificationsScheduled,
+} from '../../redux/notifications';
 
 // function onOpenDatePicker(onOpen, bool) {
 //   onOpen(bool);
 // }
 
-function MyNotes({navigation, scheduleNotification}) {
+function MyNotes({
+  navigation,
+  scheduleNotification,
+  checkPermissions,
+  requestPermissions,
+  getScheduledNotifs,
+}) {
   const [notes, setNotes] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
@@ -45,6 +56,14 @@ function MyNotes({navigation, scheduleNotification}) {
     });
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    getScheduledNotifs((notis) => console.log('Dude some dcsdcsd', notis));
+    checkPermissions((stuff) => {
+      console.log('After checking', stuff);
+      requestPermissions();
+    });
+  }, []);
 
   return (
     <View style={styles.view}>
@@ -233,6 +252,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     scheduleNotification: (t, d, m) => dispatch(scheduleNotification(t, d, m)),
+    checkPermissions: (cb) => dispatch(checkPermissions(cb)),
+    requestPermissions: () => dispatch(requestPermissions()),
+    getScheduledNotifs: (cb) => dispatch(getLocalNotificationsScheduled(cb)),
   };
 };
 
