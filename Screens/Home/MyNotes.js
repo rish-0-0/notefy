@@ -171,8 +171,8 @@ function MyNotes({navigation, scheduleNotification}) {
               setReminderDate(date);
               scheduleNotification(
                 selectedItem.header,
-                selectedItem.body,
                 date,
+                selectedItem.body,
               );
               setSelectedItem(null);
               console.log('time set', date.toTimeString());
