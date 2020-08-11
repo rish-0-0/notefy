@@ -51,7 +51,6 @@ export default function (
   },
   action,
 ) {
-  console.log('something', state);
   switch (action.type) {
     case notificationTypes.NOTIFICATION_ON_REGISTER:
       return {
