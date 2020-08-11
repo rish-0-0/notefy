@@ -22,13 +22,47 @@ const onNotfication = (notification) => {
   }
 };
 
-const initState = {
-  notif_service: new NotifService((token) => onRegister(token), onNotfication),
-  token: null,
+export const scheduleNotification = (title, date, message) => (dispatch) => {
+  try {
+    initState.notif_service.scheduleNotification(title, message, date);
+    dispatch({
+      type: notificationTypes.NOTIFICATION_SCHEDULE_SUCCESS,
+    });
+  } catch (e) {
+    dispatch({
+      payload: {
+        type: notificationTypes.NOTIFICATION_SCHEDULE_FAILURE,
+        errorMessage: e.message,
+      },
+    });
+  }
 };
 
-export default function (state = initState, action) {
+const OurNotificationService = new NotifService(
+  (token) => onRegister(token),
+  onNotfication,
+);
+
+export default function (
+  state = {
+    notif_service: OurNotificationService,
+    token: null,
+    error: null,
+  },
+  action,
+) {
+  console.log('something', state);
   switch (action.type) {
+    case notificationTypes.NOTIFICATION_ON_REGISTER:
+      return {
+        ...state,
+        token: action.payload.token,
+      };
+    case notificationTypes.NOTIFICATION_SCHEDULE_FAILURE:
+      return {
+        ...state,
+        error: action.payload.errorMessage,
+      };
     default:
       return state;
   }

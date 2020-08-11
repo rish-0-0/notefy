@@ -17,6 +17,8 @@ import Note from '../../Components/Note';
 import deleteFile from '../../helpers/deleteFile';
 
 import DatePicker from '@react-native-community/datetimepicker';
+import {connect} from 'react-redux';
+import {scheduleNotification} from '../../redux/notifications';
 
 function onOpenDatePicker(onOpen, bool) {
   onOpen(bool);
@@ -211,4 +213,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyNotes;
+const mapStateToProps = (state) => {
+  return {
+    error: state.notifications.error,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    scheduleNotification: (t, d, m) => dispatch(scheduleNotification(t, d, m)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyNotes);

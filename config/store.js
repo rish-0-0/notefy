@@ -10,4 +10,4 @@ const logger = (store) => (next) => (action) => {
   return result;
 };
 
-export default applyMiddleware(thunk, logger)(createStore)(rootReducer);
+export default applyMiddleware(logger, thunk)(createStore)(rootReducer);
