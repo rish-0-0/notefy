@@ -16,7 +16,7 @@
     "@react-native-community/push-notification-ios": "^1.4.0",
     "@react-navigation/native": "^5.7.2",
     "react": "16.13.1",
-    "react-native": "0.63.2",
+    "react-native": "0.64.1",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-push-notification": "^4.0.0",
